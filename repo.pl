@@ -82,7 +82,7 @@ sub close {
 
     %branches = ();
     $branches{$branch} = $base;
-	if ( $branch =~ m/develop|online|odessa|mogadischu/ ) {
+	if ( $branch =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
             
     } else {
 		&rebase_topic_branches(%branches);
@@ -114,7 +114,7 @@ sub close {
     if ($failed) {
         system("git merge --abort");
     } else {
-	    if ( $branch =~ m/develop|online|odessa|mogadischu/ ) {
+	    if ( $branch =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
             
 		} else {
 		    system("git branch -d $branch");
@@ -141,7 +141,7 @@ sub merge {
     	$develop_head = readpipe("git rev-parse develop");
 
 	##TODO list with repoignore branches
-    	if ( $branch_to_rebase =~ m/norebase|develop|odessa|mogadischu/ ) {
+    	if ( $branch_to_rebase =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
     		print "skipping $branch_to_rebase\n";
     	} else {
             if ($mergebase =~ m/$develop_head/ ) {
@@ -257,7 +257,7 @@ sub build_branches_map {
 		$branch_to_rebase =~ s/^\s+//;    # remove leading whitespace
 		$branch_to_rebase =~ s/\s+$//;    # remove trailing whitespace
 		##TODO list with repoignore branches
-		if ( $branch_to_rebase =~ m/norebase|develop|odessa|mogadischu/ ) {
+		if ( $branch_to_rebase =~ m/norebase|develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
 			printf "%s\n", colored("skipping $branch_to_rebase",'magenta');
 		}
 		else {

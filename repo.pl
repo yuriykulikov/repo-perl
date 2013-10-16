@@ -256,7 +256,7 @@ sub push_and_pull {
 sub build_branches_map {
 	local $base = $_[0];
 	%branches = ();
-	@lines = split( /\n/, readpipe("git branch") );
+	@lines = split( /\n/, readpipe("git branch --no-merged") );
 	foreach my $branch_to_rebase (@lines) {
 		$branch_to_rebase =~ s/[\*]//;    # remove *
 		$branch_to_rebase =~ s/^\s+//;    # remove leading whitespace

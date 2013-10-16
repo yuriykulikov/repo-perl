@@ -23,7 +23,7 @@ if ( $command =~ m/forall/ ) {
 }
 
 if ( $command =~ m/close/ ) {
-    &close(shift, shift);
+    &close(shift, shift, shift);
 }
 
 if ( $command =~ m/merge/ ) {
@@ -71,6 +71,7 @@ sub forall {
 sub close {
     $base = shift;
     $branch = shift;
+	$flags = shift;
     
     if ($base eq ""){
         printf "%s\n", colored("Usage: repo close <base> <branch>\nProvide an argument.\nAbotring.",'red');
@@ -112,7 +113,11 @@ sub close {
 	$merge_command = "git merge $option --edit -m \"$commitmsg\" $branch";
     $failed = system("$merge_command");
     if ($failed) {
-        system("git merge --abort");
+		if ( $flags =~ m/--no-abort/ ){
+		    printf "%s\n", colored("Conflicts!",'red');
+		} else {
+		    system("git merge --abort");
+		}
     } else {
 	    if ( $branch =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
             

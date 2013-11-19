@@ -105,7 +105,7 @@ sub close {
     print "merging $amount commit$ending\n";
     #$filepath = $ENV{"HOME"} . "/.gitmessage.txt";
 	#http://stackoverflow.com/questions/3357280/print-commit-message-of-a-given-commit-in-git
-	$merged_commit_messages = readpipe("git log $base..$branch --format=%B --no-merges");
+	$merged_commit_messages = readpipe("git log $base..$branch --format=%B-------------------------------------------------------------- --no-merges");
     $commitmsg = "Merge $branch into $base\n\n$merged_commit_messages";
 	$commitmsg =~ s/\"/\ /g;
 	

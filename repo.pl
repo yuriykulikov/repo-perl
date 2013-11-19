@@ -85,9 +85,9 @@ sub close {
     $branches{$branch} = $base;
 	if ( $branch =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
             
-    } else {
+    } else { if ( $flags =~ m/--auto/ ){
 		&rebase_topic_branches(%branches);
-	}
+	}}
 
     $failed = system("git checkout $base");
     if ($failed) {
@@ -113,17 +113,17 @@ sub close {
 	$merge_command = "git merge $option --edit -m \"$commitmsg\" $branch";
     $failed = system("$merge_command");
     if ($failed) {
-		if ( $flags =~ m/--no-abort/ ){
-		    printf "%s\n", colored("Conflicts!",'red');
-		} else {
+		if ( $flags =~ m/--auto/ ){
 		    system("git merge --abort");
+		} else {
+		    printf "%s\n", colored("Conflicts!",'red');
 		}
     } else {
 	    if ( $branch =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
             
-		} else {
+		} else {if ($flags =~ m/--auto/) {
 		    system("git branch -d $branch");
-		}
+		}}
     }
 }
 

@@ -118,7 +118,7 @@ sub close {
 
     %branches = ();
     $branches{$branch} = $base;
-	if ( $branch =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
+	if ( $branch =~ m/develop|stabi|master/ ) {
             
     } else { if ( $flags =~ m/--auto/ ){
 		&rebase_topic_branches(%branches);
@@ -154,7 +154,7 @@ sub close {
 		    printf "%s\n", colored("Conflicts!",'red');
 		}
     } else {
-	    if ( $branch =~ m/develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
+	    if ( $branch =~ m/develop|stabi|master/ ) {
             
 		} else {if ($flags =~ m/--auto/) {
 		    system("git branch -d $branch");
@@ -297,7 +297,7 @@ sub build_branches_map {
 		$branch_to_rebase =~ s/^\s+//;    # remove leading whitespace
 		$branch_to_rebase =~ s/\s+$//;    # remove trailing whitespace
 		##TODO list with repoignore branches
-		if ( $branch_to_rebase =~ m/norebase|develop|online|odessa|mogadischu|stabi|puli|duesseldorf/ ) {
+		if ( $branch_to_rebase =~ m/develop|stabi|master/ ) {
 			printf "%s\n", colored("skipping $branch_to_rebase",'magenta');
 		}
 		else {

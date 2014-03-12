@@ -22,6 +22,15 @@ if ( $command =~ m/forall/ ) {
     &forall($command);
 }
 
+if ( $command =~ m/folders/ ) {
+	$stuff = @ARGV;
+	$command = "";
+	for my $arg ( @ARGV ) {
+		$command = $command . " " . $arg;
+	}
+    &folders($command);
+}
+
 if ( $command =~ m/close/ ) {
     &close(shift, shift, shift);
 }
@@ -63,6 +72,32 @@ sub forall {
                 system("cd $name; $gitcommand; cd ..");
             }
 
+            next;    # can skip to the next name in the for loop
+        }
+    }
+}
+
+sub folders {
+    local $gitcommand = $_[0];
+    opendir( DIR, "." ) or die "Can't open the current directory: $!\n";
+
+    # read file/directory names in that directory into @names
+    @names = readdir(DIR) or die "Unable to read current dir:$!\n";
+    closedir(DIR);
+
+    foreach $name (@names) {
+        next if ( $name eq "." );     # skip the current directory entry
+        next if ( $name eq ".." );    # skip the parent  directory entry
+
+        if ( -d $name ) {             # is this a directory?
+
+            opendir( SUBDIR, $name )
+              or die "Can't open the current directory: $!\n";
+            @subdirnames = readdir(SUBDIR)
+              or die "Unable to read current dir:$!\n";
+            closedir(DIR);
+            my %subdirnameshash = map { $_ => 1 } @subdirnames;
+            system("cd $name; $gitcommand; cd ..");
             next;    # can skip to the next name in the for loop
         }
     }
